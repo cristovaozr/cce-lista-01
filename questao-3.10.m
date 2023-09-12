@@ -57,3 +57,55 @@ printf("---------+---------------\n");
 for i = 2:length(coset)
     printf("%s     | %s\n", mod(coset(i,:)*H', 2) + '0'*1, coset(i,:) + '0'*1);
 endfor
+
+# Daqui pra frente os loops calculam as síndromes de todos os padrões de erro
+# com peso 2, 3 e 4.
+# Dá pra perceber que uma síndrome não-nula cujo padrão de erro tem peso maior ou
+# igual a dois é a soma módulo 2 da síndrome do padrão de erro dos erros de peso
+# unitário. Por exemplo:
+# e = 01000010 = 01000000 + 00000010 = e_1 + e_7
+# Então, a síndrome de e, e*H' é dada por:
+# e*H' = e_1*H' + e_7*H'
+#      = 0100 + 1101
+#      = 1001
+printf("\nDecodificação de todas as síndromes dos padrões de erro com w(e) == 2\n");
+printf("Síndrome | Padrão de erro\n");
+printf("---------+---------------\n");
+for i = 1:7
+    for j = i+1:8
+        g = zeros(1, 8);
+        g(i) = 1; g(j) = 1;
+        s = mod(g*H', 2);
+        printf("%s     | %s\n", s + '0'*1, g + '0'*1)
+    endfor
+endfor
+
+printf("\nDecodificação de todas as síndromes dos padrões de erro com w(e) == 3\n");
+printf("Síndrome | Padrão de erro\n");
+printf("---------+---------------\n");
+for i = 1:6
+    for j = i+1:7
+        for k = j+1:8
+            g = zeros(1, 8);
+            g(i) = 1; g(j) = 1; g(k) = 1;
+            s = mod(g*H', 2);
+            printf("%s     | %s\n", s + '0'*1, g + '0'*1)
+        endfor
+    endfor
+endfor
+
+printf("\nDecodificação de todas as síndromes dos padrões de erro com w(e) == 4\n");
+printf("Síndrome | Padrão de erro\n");
+printf("---------+---------------\n");
+for i = 1:5
+    for j = i+1:6
+        for k = j+1:7
+            for l = k+1:8
+                g = zeros(1, 8);
+                g(i) = 1; g(j) = 1; g(k) = 1; g(l) = 1;
+                s = mod(g*H', 2);
+                printf("%s     | %s\n", s + '0'*1, g + '0'*1)
+            endfor
+        endfor
+    endfor
+endfor
